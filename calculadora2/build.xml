@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- You may freely edit this file. See commented blocks below for -->
+<!-- some examples of how to customize the build. -->
+<!-- (If you delete it and reopen the project it will be recreated.) -->
+<!-- By default, only the Clean and Build commands use this build script. -->
+<!-- Commands such as Run, Debug, and Test only use this build script if -->
+<!-- the Compile on Save feature is turned off for the project. -->
+<!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
+<!-- in the project's Project Properties dialog box.-->
+<project name="calculadora2" default="jar" basedir=".">
+    <!-- Definición de propiedades -->
+    <property name="build.dir" value="build"/>
+    <property name="dist.dir" value="dist"/>
+    <property name="src.dir" value="src"/>
+    <property name="build.classes.dir" value="${build.dir}/classes"/>
+    <property name="dist.jar" value="${dist.dir}/Calculadora.jar"/>
+
+    <!-- Tareas de limpieza (elimina archivos generados previamente) -->
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+
+    <!-- Tarea de compilación (compila los archivos .java a .class) -->
+    <target name="compile">
+        <mkdir dir="${build.classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${build.classes.dir}" includeantruntime="false"/>
+    </target>
+
+    <!-- Tarea de empaquetado .jar (crea el archivo .jar final) -->
+    <target name="jar" depends="compile">
+        <mkdir dir="${dist.dir}"/>
+        
+        <!-- Crear el archivo JAR y añadir las clases compiladas -->
+        <jar destfile="${dist.jar}" basedir="${build.classes.dir}">
+            <!-- Archivo de manifiesto especificando la clase principal -->
+            <manifest>
+                <attribute name="Main-Class" value="calculadora2"/>
+                <!-- Añadir dependencias en el classpath, si las hay -->
+                <attribute name="Class-Path" value="lib/NombreLibreria.jar"/>
+            </manifest>
+        </jar>
+
+        <!-- Copiar bibliotecas externas a dist/lib si existen -->
+        <copy todir="${dist.dir}/lib" flatten="true">
+            <fileset dir="lib" includes="*.jar"/>
+        </copy>
+    </target>
+</project>
